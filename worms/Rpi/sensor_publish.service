@@ -1,0 +1,10 @@
+[Unit]
+Description=Wormbin sensor publisher
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python /home/pi/sensor_publish.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

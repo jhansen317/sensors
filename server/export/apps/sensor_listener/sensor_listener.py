@@ -11,16 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 LOGGER = logging.getLogger('sensor_listener')
 
 class Listener(threading.Thread):
-    """ A thread that iterates the mqtt loop and passes messages to
-    whatever handler objects happen to be registered.
-    Handler objects are responsible only for
-    1. having topic and qos properties
-    2. having a put() method
-    sw.mqtt.handlers.BaseHandler is an abstract base class which enforces those
-    When such an object is registered as a handler, it's msg_queue will receive all the raw
-    messages from it's topic and in its run() method it can do whatever processing it wants.
-    Can be constructed with a list of handlers or not
-
+    """ A thread that iterates the mqtt loop and registers appropriate callbacks
     The @staticmethods below are written that way so we can hide their names inside the class
     and still have access to self.
     """

@@ -3,7 +3,7 @@ Description=Data logger for various sensors
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python /home/jakob/sensor_listener.py
+ExecStart=/usr/bin/python /export/apps/sensor_listener/sensor_listener.py
 Restart=on-failure
 
 [Install]

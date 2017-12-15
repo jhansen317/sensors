@@ -1,0 +1,10 @@
+[Unit]
+Description=Wormbin sensor publisher
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/sensor_publish
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

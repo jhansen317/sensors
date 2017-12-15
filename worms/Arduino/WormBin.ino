@@ -23,32 +23,30 @@ void loop() {
   StaticJsonBuffer<512> jsonBuffer;
   JsonObject& root = jsonBuffer.createObject();
   int sensor_status = 0;
-  unsigned long interval = 1000;
-  if (iters++ % 60 == 0) {
-    int moisture = analogRead(MOISTURE_PIN);
-    // Reading temperature or humidity takes about 250 milliseconds!
-    // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-    float humidity = dht.readHumidity();
-    float farenheit = dht.readTemperature(true);
+  unsigned long interval = 1000L* 60L * 15L; // Every 15 min
+  int moisture = analogRead(MOISTURE_PIN);
+  // Reading temperature or humidity takes about 250 milliseconds!
+  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
+  float humidity = dht.readHumidity();
+  float farenheit = dht.readTemperature(true);
 
-    // Check if any reads failed and exit early (to try again).
-    if (isnan(humidity) || isnan(farenheit)) {
-      sensor_status |= STATUS_BAD_DHT;
-    } else {
-      float heat_idx = dht.computeHeatIndex(farenheit, humidity);
-      root["humidity"] = humidity;
-      root["temperature"] = farenheit;
-      root["heat_index"] = heat_idx;
-    }
-  
-   if (isnan(moisture)) {
-      sensor_status |= STATUS_BAD_MOISTURE;
-    } else {
-      root["moisture"] = moisture;
-    }
-    root["status"] = sensor_status;
-    root.printTo(Serial);
-    Serial.println();
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(humidity) || isnan(farenheit)) {
+    sensor_status |= STATUS_BAD_DHT;
+  } else {
+    float heat_idx = dht.computeHeatIndex(farenheit, humidity);
+    root["humidity"] = humidity;
+    root["temperature"] = farenheit;
+    root["heat_index"] = heat_idx;
   }
+
+ if (isnan(moisture)) {
+    sensor_status |= STATUS_BAD_MOISTURE;
+  } else {
+    root["moisture"] = moisture;
+  }
+  root["status"] = sensor_status;
+  root.printTo(Serial);
+  Serial.println();
   delay(interval);
 }

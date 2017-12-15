@@ -9,6 +9,3 @@ Depends on:
 
 All installed through Arduino IDE on a Macbook
 
-Sensors:
-[DHT11 Temperature and humidity sensor](https://www.osepp.com/electronic-modules/sensor-modules/63-humidity-temperature-sensor)
-[VMA303 Moisture sensor](https://www.velleman.eu/products/view/?id=435520)

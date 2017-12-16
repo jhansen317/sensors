@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My first Chartist Tests</title>
+    <link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">
+    <link rel="stylesheet" href="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css">
+    
+  </head>
+  <body>
+    <!-- Site content goes here !-->
+    <div class="ct-chart"></div>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/chartist/dist/chartist.min.js"></script>
+    <script src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script>
+    $(document).ready(function() {
+
+        var temperature_data = [];
+        var humidity_data = [];
+        var heat_index_data = [];
+        var moisture_data = [];
+        var time_labels = [];
+        $.ajax({
+            type: 'GET',
+            url: 'api/sensors/environment/limit/200',
+            success: function(data){
+                var sensor_data = data;
+                console.debug(sensor_data);
+                $.each(sensor_data, function (idx, obj) {
+                    time_labels.push(new Date(obj['date']));
+                    temperature_data.push({x:new Date(obj['date']), y:obj.temperature});
+                    humidity_data.push({x:new Date(obj['date']), y:obj.humidity});
+                    heat_index_data.push({x:new Date(obj['date']), y:obj.heat_index});
+                    moisture_data.push({x:new Date(obj['date']), y:obj.moisture/10});
+                });
+                var chart = new Chartist.Line('.ct-chart', {
+                    series : [
+                        { name:'temperature', data:temperature_data },
+                        { name:'humidity', data:humidity_data},
+                        { name:'heat_index', data:heat_index_data},
+                        //{ name:'moisture', data:moisture_data}
+                    ]
+                }, 
+                {
+                    fullWidth: true,
+                    showPoint: false,
+                    chartPadding: {
+                        right: 40
+                    },
+                    axisX: {
+                        type: Chartist.FixedScaleAxis,
+                        divisor: 5,
+                        labelInterpolationFnc: function(value) {
+                            return moment(value).format('MMM D HH:mm');
+                        }
+                    },
+                    plugins: [
+                        Chartist.plugins.tooltip()
+                    ]
+                });
+                console.debug(temperature_data);
+            },
+            error: function(data){
+                var responseData = data;
+                var request = this;
+            }
+        });
+    });
+    </script>
+  </body>
+</html>

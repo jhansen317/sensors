@@ -13,6 +13,12 @@ Server Installation:
 
 Dependencies:
 
-    -> % sudo apt-get install apache2 libapache2-mod-wsgi mongodb mosquitto mosquitto-clients
+    -> % wget https://bootstrap.pypa.io/get-pip.py
+    -> % sudo python get-pip.py
+
+    -> % sudo apt-get install apache2 libapache2-mod-wsgi mongodb mosquitto mosquitto-clients build-essential python-dev
 
 Python packages in requirements.txt
+
+    -> % sudo pip install -r requirements.txt
+
